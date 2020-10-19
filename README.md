@@ -1,5 +1,6 @@
 # How to Run ##
 ## Running: ##
+- **IMPORTANT:** If running on RMIT servers, run `scl enable devtoolset-8 bash` first.
 - Run: `make clean`
 - Run: `make all`
 - To run the program type: `/memory_allocator.o [file] [strategy]`
