@@ -54,7 +54,7 @@ int countList(struct LinkedList linkedlist, int list) {
     return count;
 }
 
-int allocate(char const* const filename, int stratNo) {
+int allocate(char const* const filename, int stratNo, char const* const outputname) {
     // opening file
     FILE *fp = openFile(filename);
     if(fp == NULL) {
@@ -370,13 +370,7 @@ int allocate(char const* const filename, int stratNo) {
 
     fclose(fp);
 
-    if(stratNo == 0) {
-        fp = fopen("first-output.txt", "w");
-    } else if(stratNo == 1) {
-        fp = fopen("best-output.txt", "w");
-    } else {
-        fp = fopen("worst-output.txt", "w");
-    }
+    fp = fopen(outputname, "w");
 
     int totalSize = 0;
     Alloc *currAlloc = malloc(sizeof(Alloc));
@@ -419,20 +413,21 @@ int worstStrat(char const* const filename) {
 
 int main(int argc, char* argv[])
 {
-    if(argc != 3){
-		printf("The input file and allocation strategy is not specified.\n");
+    if(argc != 4){
+		printf("The input file/allocation strategy/output file is not specified.\n");
 		return EXIT_FAILURE;
     }
 
     char const* const filename = argv[1];
     char const* const allocType = argv[2];
+    char const* const outputname = argv[3];
 
     if(strcmp(allocType, allocStrat[0]) == 0) {
-        return allocate(filename, 0);
+        return allocate(filename, 0, outputname);
     } else if (strcmp(allocType, allocStrat[1]) == 0) {
-        return allocate(filename, 1);
+        return allocate(filename, 1, outputname);
     } else if (strcmp(allocType, allocStrat[2]) == 0) {
-        return allocate(filename, 2);
+        return allocate(filename, 2, outputname);
     } else {
         printf("Invalid allocation stragegy.\nTry: \"first\", \"best\" or \"worst\"\n");
     }
