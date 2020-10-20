@@ -27,3 +27,7 @@ Total memory allocated: X
 ...
 
 ```
+
+Six files have already been generated using the naming convention `[strategy]-[file]-output.txt`.
+- `[strategy]` is the allocation stratergy and is either `first`, `best` or `worst`.
+- `[file]` is the input file used, which is either `fnames` (`first-names-1.txt`) or `mnames` (`middle-names.txt`).

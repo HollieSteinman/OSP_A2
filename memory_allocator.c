@@ -7,8 +7,6 @@
 #include <time.h>
 #define MAXCHAR 1000
 
-int runcount = 0;
-
 char const* const allocStrat[] = {"first", "best", "worst"};
 
 typedef struct _Alloc {
@@ -135,7 +133,6 @@ int allocate(char const* const filename, int stratNo, char const* const outputna
             LIST_REMOVE(nextAlloc, alloc_pointers);
             LIST_INSERT_BEFORE(nextAlloc, deAlloc, freed_pointers);
             LIST_REMOVE(nextAlloc, freed_pointers);
-            //printf("%d\t", deAlloc->wsize);
             allocated = 1;
         } 
 
@@ -147,12 +144,10 @@ int allocate(char const* const filename, int stratNo, char const* const outputna
             if(allocated) {
                 LIST_REMOVE(deAlloc, freed_pointers);
             }
-            //printf("%d\t", previousAlloc->wsize);
             allocated = 1;
         }
 
         if(!allocated) {
-            //printf("%d\t", deAlloc->wsize);
             // if no adjacent blocks are empty
             // add to freed linked list
             if(LIST_FIRST(&freedMBList.head) == NULL) {
@@ -256,14 +251,12 @@ int allocate(char const* const filename, int stratNo, char const* const outputna
                 }
 
                 if(largestAlloc->wpt != NULL && largestAlloc->wsize >= (int)wsize) {
-                    //printf("%d\t%d\n", largestAlloc->wsize, (int)wsize);
                     if(largestAlloc->wsize - (int)wsize > 0) {
                         newAlloc->wpt = largestAlloc->wpt + wsize;
                         *newAlloc->wpt = '\0';
                         newAlloc->wsize = largestAlloc->wsize - wsize;
                         LIST_INSERT_AFTER(largestAlloc, newAlloc, alloc_pointers);
                         LIST_INSERT_AFTER(largestAlloc, newAlloc, freed_pointers);
-                        //printf("%p\t%d\n", newAlloc->wpt, newAlloc->wsize);
                     }
                     largestAlloc->wpt = strcpy((char *)largestAlloc->wpt, token);
                     largestAlloc->wsize = wsize;
@@ -326,7 +319,6 @@ int allocate(char const* const filename, int stratNo, char const* const outputna
                     LIST_REMOVE(nextAlloc, alloc_pointers);
                     LIST_INSERT_BEFORE(nextAlloc, deAlloc, freed_pointers);
                     LIST_REMOVE(nextAlloc, freed_pointers);
-                    //printf("%d\t", deAlloc->wsize);
                     allocated = 1;
                 } 
 
@@ -338,12 +330,10 @@ int allocate(char const* const filename, int stratNo, char const* const outputna
                     if(allocated) {
                         LIST_REMOVE(deAlloc, freed_pointers);
                     }
-                    //printf("%d\t", previousAlloc->wsize);
                     allocated = 1;
                 }
 
                 if(allocated == 0) {
-                    //printf("%d\t", deAlloc->wsize);
                     // if no adjacent blocks are empty
                     // add to freed linked list
                     if(LIST_FIRST(&freedMBList.head) == NULL) {
@@ -388,24 +378,6 @@ int allocate(char const* const filename, int stratNo, char const* const outputna
     fprintf(fp,"\n-----allocMBList-----\n");
     LIST_FOREACH(currAlloc, &allocMBList.head, alloc_pointers) {
         fprintf(fp,"%p\t%d\t%s\n", currAlloc->wpt, currAlloc->wsize, (char *) currAlloc->wpt);
-    }
-
-    return 0;
-}
-
-int bestStrat(char const* const filename) {
-    FILE *fp = openFile(filename);
-    if(fp == NULL) {
-        return EXIT_FAILURE;
-    }
-
-    return 0;
-}
-
-int worstStrat(char const* const filename) {
-    FILE *fp = openFile(filename);
-    if(fp == NULL) {
-        return EXIT_FAILURE;
     }
 
     return 0;
